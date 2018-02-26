@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/schollz/patchitup/patchitup"
+	"github.com/schollz/patchitup-encrypted/patchitup"
 )
 
 var (

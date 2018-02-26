@@ -17,7 +17,7 @@ import (
 	log "github.com/cihub/seelog"
 	humanize "github.com/dustin/go-humanize"
 	"github.com/pkg/errors"
-	"github.com/schollz/patchitup/patchitup/keypair"
+	"github.com/schollz/patchitup-encrypted/patchitup/keypair"
 	"github.com/schollz/utils"
 )
 
