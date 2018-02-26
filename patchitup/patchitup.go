@@ -109,6 +109,13 @@ func New(c Configuration) (p *Patchitup, err error) {
 	return
 }
 
+// KeyPair returns the current keypair
+func (p *Patchitup) KeyPair() (public, private string) {
+	public = p.key.Public
+	private = p.key.Private
+	return
+}
+
 // getKeys will return all the public+private key pairs
 func getKeys() (keys []keypair.KeyPair) {
 	files, errOpen := ioutil.ReadDir(DataFolder)
