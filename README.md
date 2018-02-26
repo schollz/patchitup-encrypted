@@ -47,32 +47,14 @@ $ patchitup-encrypted -u me -s http://localhost:8002 -f SOMEFILE
 The first time you patch will basically just send up the gzipped file. Subsequent edits will just send up the patches. The percentage (e.g. `9.9%`) specifies the percentage of the entire file size that is being sent (to get an idea of bandwidth savings). The server also will log bandwidth usage.
 
 
-# How does it work?
-
-_Note:_ *patchitup-encrypted* does **not** work for binary files (yet).
-
-Why not just do "`diff -u old new > patch && rsync patch your@server:`"? Well, *patchitup-encrypted* keeps things organized a lot better and uses `gzip` by default to reduce the bandwidth cost even further. Also, in order to patch a remote file you first need a copy of the remote file to create the patch. In *patchitup-encrypted*, if the local copy of remote file is not available, a local copy of the remote file is reconstructed it in a way that can massively reduce bandwidth (i.e. instead of just downloading the remote file). To reconstruct a local copy of remote file:
-
-1. The client asks the remote server for a hash of every line and its corresponding line number in the remote file. 
-2. The client checks to see if any lines are needed (i.e. the set of line hashes that do not exist in the current local file). The client then asks the remote server for the actual lines corresponding to the missing hashes.
-3. The client uses these data (the local line hashes, the remote line hashes, and the hash line numbers) to reconstruct a copy of the remote file for doing the patching.
-
-Once the local copy of the remote file is established, a patch is created and gzipped and sent to the server for overwriting the current remote copy. A current remote copy is cached locally so that it need not be reconstructed the next time.
-
-A more detailed flow chart:
-
-<center>
-	<img src="https://user-images.githubusercontent.com/6550035/36574282-e0335014-17f9-11e8-92ba-1a474deaae76.png">
-</center>
-
 # Roadmap
 
 I would love PRs.
 
 Some ideas I'd like to add:
 
-- [ ] Built-in security (authentication tokens?)
-- [ ] Encryption option (to keep data on server private)
+- [x] Built-in security (authentication tokens?)
+- [x] Encryption option (to keep data on server private)
 
 # License
 
