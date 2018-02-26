@@ -1,0 +1,13 @@
+language: go
+
+before_install:
+  - go get github.com/schollz/utils/...
+  
+go:
+  - "1.5"
+  - "1.6"
+  - "1.7"
+  - "1.8"
+  - "1.9"
+  - "1.10"
+  - tip
