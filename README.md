@@ -16,7 +16,7 @@
 
 <em><strong>Why not git?</strong></em> While *git* basically  does this already, its not terribly easy to setup a *git* server to support multiple users (though [gitolite](https://github.com/sitaramc/gitolite) does a great job of simplifying the process).  Also, most of the features of *git* are not necessary for my use-case.
 
-_Note: this is an encrypted version of [github.com/schollz/patchitup](https://github.com/schollz/patchitup).
+_Note: this is an encrypted version of [github.com/schollz/patchitup](https://github.com/schollz/patchitup)._
 
 # Quickstart
 
