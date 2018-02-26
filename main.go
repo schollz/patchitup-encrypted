@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"strings"
 
 	"github.com/schollz/patchitup-encrypted/patchitup"
 )
@@ -13,23 +14,23 @@ var (
 	dataFolder string
 	server     bool
 	rebuild    bool
+	whoami     bool
 	pathToFile string
-	username   string
+	identity   string
 	address    string
-	passphrase string
 )
 
 func main() {
 
 	flag.StringVar(&port, "port", "8002", "port to run server")
 	flag.StringVar(&pathToFile, "f", "", "path to the file to patch")
-	flag.StringVar(&username, "u", "", "username on the cloud")
-	flag.StringVar(&passphrase, "p", "", "passphrase to use")
+	flag.StringVar(&identity, "i", "", "identity on the cloud")
 	flag.StringVar(&address, "s", "", "server name")
 	flag.StringVar(&dataFolder, "data", "", "folder to data (default $HOME/.patchitup)")
 	flag.BoolVar(&doDebug, "debug", false, "enable debugging")
 	flag.BoolVar(&server, "host", false, "enable hosting")
 	flag.BoolVar(&rebuild, "rebuild", false, "rebuild file")
+	flag.BoolVar(&whoami, "whoami", false, "get identity")
 	flag.Parse()
 
 	if doDebug {
@@ -49,16 +50,34 @@ func main() {
 }
 
 func run() error {
+	var public, private string
+	if len(strings.Split(identity, "-")) == 2 {
+		public = strings.Split(identity, "-")[0]
+		private = strings.Split(identity, "-")[1]
+	}
 	if server {
 		patchitup.SetLogLevel("info")
 		err := patchitup.Run(port)
 		if err != nil {
 			return err
 		}
+	} else if whoami {
+		p, err := patchitup.New(patchitup.Configuration{
+			PathToFile:    pathToFile,
+			ServerAddress: address,
+			PublicKey:     public,
+			PrivateKey:    private,
+		})
+		if err != nil {
+			return err
+		}
+		fmt.Println(p.Identity())
 	} else if rebuild {
 		p, err := patchitup.New(patchitup.Configuration{
 			PathToFile:    pathToFile,
 			ServerAddress: address,
+			PublicKey:     public,
+			PrivateKey:    private,
 		})
 		if err != nil {
 			return err
@@ -72,6 +91,8 @@ func run() error {
 		p, err := patchitup.New(patchitup.Configuration{
 			PathToFile:    pathToFile,
 			ServerAddress: address,
+			PublicKey:     public,
+			PrivateKey:    private,
 		})
 		if err != nil {
 			return err

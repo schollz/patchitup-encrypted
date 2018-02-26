@@ -109,11 +109,9 @@ func New(c Configuration) (p *Patchitup, err error) {
 	return
 }
 
-// KeyPair returns the current keypair
-func (p *Patchitup) KeyPair() (public, private string) {
-	public = p.key.Public
-	private = p.key.Private
-	return
+// Identity returns the current keypair
+func (p *Patchitup) Identity() string {
+	return p.key.Public + "-" + p.key.Private
 }
 
 // getKeys will return all the public+private key pairs
@@ -172,10 +170,11 @@ func (p *Patchitup) latestHash() (hash string, err error) {
 
 // Rebuild will rebuild the specified file and return the latest
 func (p *Patchitup) Rebuild() (latest string, err error) {
-	// flush logs so that they show up
-	defer log.Flush()
-
 	log.Debug("rebuilding")
+	err = p.sync()
+	if err != nil {
+		log.Warn(err)
+	}
 
 	patches, err := p.getPatches()
 	if err != nil {
